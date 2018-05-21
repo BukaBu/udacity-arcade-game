@@ -1,17 +1,22 @@
-// Enemies our player must avoid
-class Enemy {
+"use strict";
 
-  constructor(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+
+class Characters {
+
+  constructor(x, y, speed, sprite) {
     this.x = x;
     this.y = y;
     this.speed = speed;
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = sprite;
   }
+
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+}
+
+// Enemies our player must avoid
+class Enemy extends Characters {
 
   // Update the enemy's position, required method for game
   // Parameter: dt, a time delta between ticks
@@ -39,7 +44,7 @@ class Enemy {
 
   // Draw the enemy on the screen, required method for game
   render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    super.render();
   }
 
 }
@@ -47,21 +52,14 @@ class Enemy {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-class Player {
-
-  constructor (x, y, speed) {
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-    this.sprite = 'images/char-cat-girl.png';
-  }
+class Player extends Characters {
 
   update() {
 
   }
 
   render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    super.render();
   }
 
   handleInput(keyPressed) {
@@ -84,9 +82,10 @@ class Player {
 
     if (this.y < 0) {
       setTimeout(function () {
+        alert("Great! You reached a water! You won!");
         player.x = 202;
         player.y = 405;
-      }, 600);
+        }, 600);
     }
   }
 
@@ -100,11 +99,11 @@ const allEnemies = [];
 
 // Position "y" where the enemies will are created
 const enemyPosition = [60, 140, 220];
-const player = new Player(200, 380, 50);
+const player = new Player(200, 380, 50, 'images/char-cat-girl.png');
 let enemy;
 
 enemyPosition.forEach(function (posY) {
-    enemy = new Enemy(0, posY, 200);
+    enemy = new Enemy(0, posY, 200, 'images/enemy-bug.png');
     allEnemies.push(enemy);
 });
 
